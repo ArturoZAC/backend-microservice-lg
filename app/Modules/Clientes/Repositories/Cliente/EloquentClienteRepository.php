@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Modules\Clientes\Repositories\Cliente;
+
+use App\Modules\Clientes\Models\ClienteModel;
+use App\Modules\Clientes\Entities\ClienteEntity;
+use App\Modules\Clientes\DTOs\Clientes\CrearClienteDTO;
+
+class EloquentClienteRepository extends ClienteRepositoryAbstract
+{
+    public function create(CrearClienteDTO $dto): ClienteEntity
+    {
+        $model = ClienteModel::create([
+            'nombres' => $dto->nombres,
+            'apellidos' => $dto->apellidos,
+            'empresa' => $dto->empresa,
+            'celular' => $dto->celular,
+            'password' => bcrypt($dto->password),
+            'edad' => $dto->edad,
+            'email' => $dto->email,
+            'sexo' => $dto->sexo,
+            'medio_ingreso' => $dto->medio_ingreso,
+            'registro' => $dto->registro,
+            'tipo_documento' => $dto->tipo_documento,
+            'numero_documento' => $dto->numero_documento,
+            'estado' => $dto->estado,
+            'antiguo' => $dto->antiguo,
+            'puntuacion' => $dto->puntuacion,
+        ]);
+
+        return $this->mapToEntity($model);
+    }
+
+    public function getAll(): array
+    {
+        return ClienteModel::all()
+            ->map(fn ($m) => $this->mapToEntity($m))
+            ->toArray();
+    }
+
+    public function findById(int $id): ?ClienteEntity
+    {
+        $model = ClienteModel::find($id);
+        return $model ? $this->mapToEntity($model) : null;
+    }
+
+    public function delete(int $id): bool
+    {
+        $model = ClienteModel::find($id);
+        return $model ? $model->delete() : false;
+    }
+
+    private function mapToEntity(ClienteModel $model): ClienteEntity
+    {
+        return new ClienteEntity(
+            id: $model->id,
+            nombres: $model->nombres,
+            apellidos: $model->apellidos,
+            empresa: $model->empresa,
+            celular: $model->celular,
+            password: $model->password,
+            edad: $model->edad,
+            email: $model->email,
+            sexo: $model->sexo,
+            medioIngreso: $model->medio_ingreso,
+            registro: $model->registro,
+            tipoDocumento: $model->tipo_documento,
+            numeroDocumento: $model->numero_documento,
+            estado: $model->estado,
+            antiguo: $model->antiguo,
+            puntuacion: $model->puntuacion
+        );
+    }
+}
