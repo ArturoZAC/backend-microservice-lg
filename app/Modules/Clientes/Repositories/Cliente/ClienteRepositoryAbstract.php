@@ -9,9 +9,12 @@ abstract class ClienteRepositoryAbstract
 {
     abstract public function create(CrearClienteDTO $dto): ClienteEntity;
 
+    /** @return ClienteEntity[] */
     abstract public function getAll(): array;
 
     abstract public function findById(int $id): ?ClienteEntity;
 
     abstract public function delete(int $id): bool;
+
+    abstract public function update(int $id, array $data): ?ClienteEntity;
 }

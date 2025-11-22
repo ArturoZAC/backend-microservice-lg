@@ -50,6 +50,20 @@ class EloquentClienteRepository extends ClienteRepositoryAbstract
         return $model ? $model->delete() : false;
     }
 
+    public function update(int $id, array $data): ?ClienteEntity
+    {
+        $model = ClienteModel::find($id);
+        if (!$model) return null;
+
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        $model->update($data);
+
+        return $this->mapToEntity($model);
+    }
+
     private function mapToEntity(ClienteModel $model): ClienteEntity
     {
         return new ClienteEntity(
