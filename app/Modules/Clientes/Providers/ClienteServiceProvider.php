@@ -2,9 +2,12 @@
 
 namespace App\Modules\Clientes\Providers;
 use Illuminate\Support\ServiceProvider;
+use App\Modules\Clientes\Repositories\ClienteUbicacion\ClienteUbicacionRepositoryAbstract;
+use App\Modules\Clientes\Repositories\ClienteUbicacion\EloquentClienteUbicacionRepository;
 
 use App\Modules\Clientes\Repositories\ClienteContacto\ClienteContactoRepositoryAbstract;
 use App\Modules\Clientes\Repositories\ClienteContacto\EloquentClienteContactoRepository;
+
 use App\Modules\Clientes\Repositories\Cliente\ClienteRepositoryAbstract;
 use App\Modules\Clientes\Repositories\Cliente\EloquentClienteRepository;
 
@@ -22,6 +25,12 @@ class ClienteServiceProvider extends ServiceProvider
         $this->app->bind(
             ClienteContactoRepositoryAbstract::class,
             EloquentClienteContactoRepository::class
+        );
+
+        // ClienteUbicacion
+        $this->app->bind(
+            ClienteUbicacionRepositoryAbstract::class,
+            EloquentClienteUbicacionRepository::class
         );
     }
 }

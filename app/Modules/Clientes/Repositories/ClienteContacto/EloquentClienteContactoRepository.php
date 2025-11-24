@@ -42,13 +42,15 @@ class EloquentClienteContactoRepository extends ClienteContactoRepositoryAbstrac
         $model = ClienteContactoModel::find($dto->id);
         if (!$model) return null;
 
-        $model->update([
+        $dataToUpdate = array_filter([
             'nombres' => $dto->nombres,
             'celular' => $dto->celular,
             'correo' => $dto->correo,
             'tipo_documento' => $dto->tipo_documento,
             'numero_documento' => $dto->numero_documento,
-        ]);
+        ], fn ($v) => $v !== null);
+
+        $model->update($dataToUpdate);
 
         return $this->mapToEntity($model);
     }
