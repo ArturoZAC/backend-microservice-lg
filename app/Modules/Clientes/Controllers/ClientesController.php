@@ -86,12 +86,20 @@ class ClientesController extends Controller
             );
 
             // Ocultar password
-            $clientesArray = array_map(
+            // $clientesArray = array_map(
+            //     fn($c) => array_diff_key($c->toArray(), ['password' => '']),
+            //     $clientes
+            // );
+
+            // return response()->json($clientesArray, 200);
+
+
+            $clientes['data'] = array_map(
                 fn($c) => array_diff_key($c->toArray(), ['password' => '']),
-                $clientes
+                $clientes['data']
             );
 
-            return response()->json($clientesArray, 200);
+            return response()->json($clientes, 200);
 
         } catch (\Throwable $e) {
             return $this->handleError($e);

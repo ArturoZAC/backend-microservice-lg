@@ -71,9 +71,20 @@ class EloquentClienteRepository extends ClienteRepositoryAbstract
         $results = $query->paginate($perPage);
 
         // Mapear a Entities
-        return $results->getCollection()
-            ->map(fn($m) => $this->mapToEntity($m))
-            ->toArray();
+        // return $results->getCollection()
+        //     ->map(fn($m) => $this->mapToEntity($m))
+        //     ->toArray();
+
+        return [
+            'data' => $results->getCollection()
+                ->map(fn($m) => $this->mapToEntity($m))
+                ->toArray(),
+
+            'total' => $results->total(),
+            'per_page' => $results->perPage(),
+            'current_page' => $results->currentPage(),
+            'last_page' => $results->lastPage(),
+        ];
     }
 
 
