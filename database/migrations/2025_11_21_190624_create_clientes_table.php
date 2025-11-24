@@ -24,13 +24,13 @@ return new class extends Migration
             //------
             $table->enum('sexo', ['masculino', 'femenino', 'otro'])->nullable();
             $table->enum('medio_ingreso', [
-                'Facebook',
-                'Whatsapp',
-                'Google',
-                'Instagram',
-                'Post Venta',
-                'Recomendacion',
-                'Logos'
+                'facebook',
+                'whatsapp',
+                'google',
+                'instagram',
+                'post_venta',     // <- aquí cambias espacio por guion
+                'recomendacion',
+                'logos'
             ])->nullable();
             $table->enum('registro', ['sistema', 'pagina_web'])->default('sistema');
             $table->enum('tipo_documento', ['dni', 'ruc', 'dni_extranjeria']);

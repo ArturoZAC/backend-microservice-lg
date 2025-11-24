@@ -11,6 +11,8 @@ use App\Modules\Clientes\Repositories\ClienteContacto\EloquentClienteContactoRep
 use App\Modules\Clientes\Repositories\Cliente\ClienteRepositoryAbstract;
 use App\Modules\Clientes\Repositories\Cliente\EloquentClienteRepository;
 
+
+//*INYECCION DE DEPENDENCIAS
 class ClienteServiceProvider extends ServiceProvider
 {
     public function register(): void

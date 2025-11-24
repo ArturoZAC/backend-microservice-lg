@@ -27,3 +27,4 @@ Route::get('/ubicaciones/{id}', [ClienteUbicacionController::class, 'buscarUbica
 Route::put('/ubicaciones/{id}', [ClienteUbicacionController::class, 'actualizarClienteUbicacion']);
 Route::delete('/ubicaciones/{id}', [ClienteUbicacionController::class, 'eliminarClienteUbicacion']);
 
+
