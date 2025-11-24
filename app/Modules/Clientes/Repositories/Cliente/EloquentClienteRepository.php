@@ -31,12 +31,51 @@ class EloquentClienteRepository extends ClienteRepositoryAbstract
         return $this->mapToEntity($model);
     }
 
-    public function getAll(): array
-    {
-        return ClienteModel::all()
-            ->map(fn ($m) => $this->mapToEntity($m))
+    //*Metodo sin filtrado ni buscador
+    // public function getAll(): array
+    // {
+    //     return ClienteModel::all()
+    //         ->map(fn ($m) => $this->mapToEntity($m))
+    //         ->toArray();
+    // }
+
+    public function getAll(
+        ?string $search = null,
+        ?string $tipoDocumento = null,
+        ?string $medioIngreso = null,
+        int $perPage = 10
+    ): array {
+        $query = ClienteModel::query();
+
+        // Buscador
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nombres', 'like', "%$search%")
+                ->orWhere('apellidos', 'like', "%$search%")
+                ->orWhere('empresa', 'like', "%$search%")
+                ->orWhere('celular', 'like', "%$search%")
+                ->orWhere('numero_documento', 'like', "%$search%");
+            });
+        }
+
+        // Filtros
+        if ($tipoDocumento) {
+            $query->where('tipo_documento', $tipoDocumento);
+        }
+
+        if ($medioIngreso) {
+            $query->where('medio_ingreso', $medioIngreso);
+        }
+
+        // Paginación
+        $results = $query->paginate($perPage);
+
+        // Mapear a Entities
+        return $results->getCollection()
+            ->map(fn($m) => $this->mapToEntity($m))
             ->toArray();
     }
+
 
     public function findById(int $id): ?ClienteEntity
     {

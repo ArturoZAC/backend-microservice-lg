@@ -9,8 +9,24 @@ abstract class ClienteRepositoryAbstract
 {
     abstract public function create(CrearClienteDTO $dto): ClienteEntity;
 
-    /** @return ClienteEntity[] */
-    abstract public function getAll(): array;
+    //*Metodo sin filtros ni buscador
+    // /** @return ClienteEntity[] */
+    // abstract public function getAll(): array;
+
+    // abstract public function getAll(): array;
+    /** 
+     * @param string|null $search
+     * @param string|null $tipoDocumento
+     * @param string|null $medioIngreso
+     * @param int $perPage
+     * @return ClienteEntity[]
+     */
+    abstract public function getAll(
+        ?string $search = null,
+        ?string $tipoDocumento = null,
+        ?string $medioIngreso = null,
+        int $perPage = 10
+    ): array;
 
     abstract public function findById(int $id): ?ClienteEntity;
 

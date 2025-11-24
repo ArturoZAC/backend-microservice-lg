@@ -52,14 +52,44 @@ class ClientesController extends Controller
         }
     }
 
-    public function listarClientes()
+    // public function listarClientes()
+    // {
+    //     try {
+    //         $useCase = new ListaClientesUseCase($this->clienteRepository);
+    //         $clientes = $useCase->execute(); // devuelve array de ClienteEntity
+
+    //         // Asegurarse de que no se devuelva password
+    //         $clientesArray = array_map(fn($c) => array_diff_key($c->toArray(), ['password' => '']), $clientes);
+
+    //         return response()->json($clientesArray, 200);
+
+    //     } catch (\Throwable $e) {
+    //         return $this->handleError($e);
+    //     }
+    // }
+
+
+    public function listarClientes(Request $request)
     {
         try {
-            $useCase = new ListaClientesUseCase($this->clienteRepository);
-            $clientes = $useCase->execute(); // devuelve array de ClienteEntity
+            $search = $request->query('search');
+            $tipoDocumento = $request->query('tipo_documento');
+            $medioIngreso = $request->query('medio_ingreso');
+            $perPage = intval($request->query('per_page', 10));
 
-            // Asegurarse de que no se devuelva password
-            $clientesArray = array_map(fn($c) => array_diff_key($c->toArray(), ['password' => '']), $clientes);
+            $useCase = new ListaClientesUseCase($this->clienteRepository);
+            $clientes = $useCase->execute(
+                search: $search,
+                tipoDocumento: $tipoDocumento,
+                medioIngreso: $medioIngreso,
+                perPage: $perPage
+            );
+
+            // Ocultar password
+            $clientesArray = array_map(
+                fn($c) => array_diff_key($c->toArray(), ['password' => '']),
+                $clientes
+            );
 
             return response()->json($clientesArray, 200);
 
@@ -67,7 +97,6 @@ class ClientesController extends Controller
             return $this->handleError($e);
         }
     }
-
 
     public function buscarPorId($id)
     {

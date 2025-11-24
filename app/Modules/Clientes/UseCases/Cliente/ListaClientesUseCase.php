@@ -10,8 +10,17 @@ class ListaClientesUseCase
         private readonly ClienteRepositoryAbstract $repository
     ) {}
 
-    public function execute(): array
-    {
-        return $this->repository->getAll();
+    public function execute(
+        ?string $search = null,
+        ?string $tipoDocumento = null,
+        ?string $medioIngreso = null,
+        int $perPage = 10
+    ): array {
+        return $this->repository->getAll(
+            search: $search,
+            tipoDocumento: $tipoDocumento,
+            medioIngreso: $medioIngreso,
+            perPage: $perPage
+        );
     }
 }

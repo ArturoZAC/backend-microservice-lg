@@ -15,7 +15,6 @@ Route::put('/{id}', [ClientesController::class, 'actualizarCliente']);
 // CRUD de contactos de clientes, usando clienteId en la URL
 Route::post('/{clienteId}/contactos', [ClienteContactoController::class, 'crearClienteContacto']);
 Route::get('/{clienteId}/contactos', [ClienteContactoController::class, 'listarClientesContactos']);
-
 Route::get('/contactos/{id}', [ClienteContactoController::class, 'buscarClienteContactoPorId']);
 Route::put('/contactos/{id}', [ClienteContactoController::class, 'actualizarClienteContacto']);
 Route::delete('/contactos/{id}', [ClienteContactoController::class, 'eliminarClienteContactoPorId']);
