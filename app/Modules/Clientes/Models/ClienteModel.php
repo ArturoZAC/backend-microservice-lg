@@ -27,7 +27,7 @@ class ClienteModel extends Model
         'tipo_documento',
         'numero_documento',
         'antiguo',
-        'puntuacion'
+        'puntuacion',
     ];
 
     // Ocultar campos sensibles al convertir a JSON
@@ -41,6 +41,7 @@ class ClienteModel extends Model
         'estado' => 'integer',
         'antiguo' => 'integer',
         'puntuacion' => 'integer',
+        'created_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     // Relaciones

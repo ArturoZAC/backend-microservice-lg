@@ -41,6 +41,7 @@ class EloquentClienteRepository extends ClienteRepositoryAbstract
 
     public function getAll(
         ?string $search = null,
+        ?string $registro = null,
         ?string $tipoDocumento = null,
         ?string $medioIngreso = null,
         int $perPage = 10
@@ -58,15 +59,21 @@ class EloquentClienteRepository extends ClienteRepositoryAbstract
             });
         }
 
+        
         // Filtros
+        if ($registro) {
+            $query->where('registro', $registro);
+        }
+        
         if ($tipoDocumento) {
             $query->where('tipo_documento', $tipoDocumento);
         }
-
+        
         if ($medioIngreso) {
             $query->where('medio_ingreso', $medioIngreso);
         }
-
+        
+        $query->orderBy('created_at', 'asc');
         // Paginación
         $results = $query->paginate($perPage);
 
@@ -132,7 +139,8 @@ class EloquentClienteRepository extends ClienteRepositoryAbstract
             numeroDocumento: $model->numero_documento,
             estado: $model->estado,
             antiguo: $model->antiguo,
-            puntuacion: $model->puntuacion
+            puntuacion: $model->puntuacion,
+            createdAt: $model->created_at?->toDateTimeString(),
         );
     }
 }

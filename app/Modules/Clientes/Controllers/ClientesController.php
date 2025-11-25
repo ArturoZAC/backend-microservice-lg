@@ -73,6 +73,7 @@ class ClientesController extends Controller
     {
         try {
             $search = $request->query('search');
+            $registro = $request->query('registro');
             $tipoDocumento = $request->query('tipo_documento');
             $medioIngreso = $request->query('medio_ingreso');
             $perPage = intval($request->query('per_page', 10));
@@ -80,6 +81,7 @@ class ClientesController extends Controller
             $useCase = new ListaClientesUseCase($this->clienteRepository);
             $clientes = $useCase->execute(
                 search: $search,
+                registro: $registro,
                 tipoDocumento: $tipoDocumento,
                 medioIngreso: $medioIngreso,
                 perPage: $perPage

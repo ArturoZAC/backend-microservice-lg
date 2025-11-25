@@ -20,7 +20,8 @@ class ClienteEntity
         public readonly string $numeroDocumento,
         public readonly int $estado,
         public readonly int $antiguo,
-        public readonly int $puntuacion
+        public readonly int $puntuacion,
+        public readonly ?string $createdAt
     ) {}
 
     public function toArray(): array
@@ -42,6 +43,7 @@ class ClienteEntity
             'estado' => $this->estado,
             'antiguo' => $this->antiguo,
             'puntuacion' => $this->puntuacion,
+            'created_at' => $this->createdAt,
         ];
     }
 }

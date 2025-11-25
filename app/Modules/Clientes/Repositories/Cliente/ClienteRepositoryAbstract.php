@@ -23,6 +23,7 @@ abstract class ClienteRepositoryAbstract
      */
     abstract public function getAll(
         ?string $search = null,
+        ?string $registro = null,
         ?string $tipoDocumento = null,
         ?string $medioIngreso = null,
         int $perPage = 10
