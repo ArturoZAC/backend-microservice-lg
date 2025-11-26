@@ -5,50 +5,55 @@ namespace App\Modules\Clientes\DTOs\Clientes;
 class CrearClienteDTO
 {
     public function __construct(
+        // Obligatorios
         public readonly string $nombres,
         public readonly string $apellidos,
-        public readonly string $empresa,
-        public readonly string $celular,
-        public readonly string $password,
-        public readonly int    $edad,
         public readonly string $email,
-        public readonly string $sexo,
-        public readonly string $medio_ingreso,
-        public readonly string $registro,
-        public readonly int    $estado,
         public readonly string $tipo_documento,
         public readonly string $numero_documento,
-        public readonly int    $antiguo,
-        public readonly int    $puntuacion,
+
+        // Opcionales
+        public readonly ?string $empresa = null,
+        public readonly ?string $celular = null,
+        public readonly ?string $password = null,
+        public readonly ?int $edad = null,
+        public readonly ?string $sexo = null,
+        public readonly ?string $medio_ingreso = null,
+
+        // Automáticos / Default
+        public readonly string $registro = "sistema",
+        public readonly int $estado = 1,
+        public readonly int $antiguo = 1,
+        public readonly int $puntuacion = 0,
     ) {}
 
-    // MÉTODO FACTORY Estilo Zod: [error, dto]
+    // Método factory estilo Zod
     public static function create(array $data): array
     {
-        // 1. Lista de campos requeridos
+        // 1. Campos obligatorios
         $required = [
-            'nombres', 'apellidos', 'empresa', 'celular',
-            'password', 'edad', 'email', 'sexo',
-            'medio_ingreso', 'registro', 'estado',
-            'tipo_documento', 'numero_documento',
-            'antiguo', 'puntuacion'
+            'nombres',
+            'apellidos',
+            'email',
+            'tipo_documento',
+            'numero_documento'
         ];
 
         foreach ($required as $field) {
-            if (!array_key_exists($field, $data)) {
+            if (!array_key_exists($field, $data) || $data[$field] === '') {
                 return ["Falta el campo requerido: $field", null];
             }
         }
 
-        // 2. Validación enums tipo Zod
-        $medioIngresoEnum = ['facebook','whatsapp','google','instagram','post_venta','recomendacion','logos'];
-        if (!in_array($data['medio_ingreso'], $medioIngresoEnum, true)) {
-            return ["Valor inválido para medio_ingreso", null];
+        // 2. Validación ENUMS
+        $sexoEnum = ['masculino','femenino','otro'];
+        if (isset($data['sexo']) && !in_array($data['sexo'], $sexoEnum, true)) {
+            return ["Valor inválido para sexo", null];
         }
 
-        $registroEnum = ['sistema','pagina_web'];
-        if (!in_array($data['registro'], $registroEnum, true)) {
-            return ["Valor inválido para registro", null];
+        $medioIngresoEnum = ['facebook','whatsapp','google','instagram','post_venta','recomendacion','logos'];
+        if (isset($data['medio_ingreso']) && !in_array($data['medio_ingreso'], $medioIngresoEnum, true)) {
+            return ["Valor inválido para medio_ingreso", null];
         }
 
         $tipoDocumentoEnum = ['dni','ruc','dni_extranjeria'];
@@ -56,31 +61,22 @@ class CrearClienteDTO
             return ["Valor inválido para tipo_documento", null];
         }
 
-        if ($data['puntuacion'] < 1 || $data['puntuacion'] > 10) {
-            return ["La puntuación debe ser entre 1 y 10", null];
-        }
-
-        // 3. Crear instancia del DTO → estilo Zod
+        // 3. Crear instancia DTO
         $dto = new self(
-            nombres:          (string)$data['nombres'],
-            apellidos:        (string)$data['apellidos'],
-            empresa:          (string)$data['empresa'],
-            celular:          (string)$data['celular'],
-            password:         (string)$data['password'],
-            edad:             (int)$data['edad'],
-            email:            (string)$data['email'],
-            sexo:             (string)$data['sexo'],
-            medio_ingreso:    (string)$data['medio_ingreso'],
-            registro:         (string)$data['registro'],
-            estado:           (int)$data['estado'],
-            tipo_documento:   (string)$data['tipo_documento'],
-            numero_documento: (string)$data['numero_documento'],
-            antiguo:          (int)$data['antiguo'],
-            puntuacion:       (int)$data['puntuacion'],
+            nombres: $data['nombres'],
+            apellidos: $data['apellidos'],
+            email: $data['email'],
+            tipo_documento: $data['tipo_documento'],
+            numero_documento: $data['numero_documento'],
+
+            empresa: $data['empresa'] ?? null,
+            celular: $data['celular'] ?? null,
+            password: $data['password'] ?? null,
+            edad: isset($data['edad']) ? (int)$data['edad'] : null,
+            sexo: $data['sexo'] ?? null,
+            medio_ingreso: $data['medio_ingreso'] ?? null,
         );
 
-        // RETORNA EXACTAMENTE COMO ZOD:
-        // [ errorMessage, null ]  OR [ null, dto ]
         return [null, $dto];
     }
 }
